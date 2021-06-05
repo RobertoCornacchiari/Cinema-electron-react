@@ -2,7 +2,7 @@
     font-family: sans-serif;
     align-content: center;
   }
-body {
+body {  
   background-image: linear-gradient(
     to right,
     #13b077,
@@ -21,4 +21,15 @@ body {
     background-color: white;
   width: 700px;
   margin: 10px auto;
+  font-size: 20px;
+}
+.CodiceSpettatore {
+    font-size: 30px;
+    margin-bottom: 20px;
+    background-color: cyan;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 8px 20px;
+    border-radius: 5px;
 }

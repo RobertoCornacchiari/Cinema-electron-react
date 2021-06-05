@@ -7,7 +7,11 @@ const { GETData, postData } = require("./fetch.js");
 const AppContext = React.createContext(null);
 
 export function App() {
-  const [state, dispatch] = useReducer(reducer, {});
+  const [state, dispatch] = useReducer(reducer, {
+      codice: "",
+      proiezioniDisponibili: [],
+  });
+
   return (
     <AppContext.Provider value={{ state, dispatch }}>
       <Schermata contesto={AppContext} />
@@ -18,6 +22,9 @@ export function App() {
 function reducer(state, action) {
     let newState = { ...state };
     switch (action.type) {
+      case "Carica proiezioni":
+        newState.proiezioniDisponibili = action.payload;
+      break;
       default:
         break;
     }
