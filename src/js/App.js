@@ -1,8 +1,27 @@
-import React from 'react';
+import React, { useReducer, useContext, useEffect, useState } from "react";
+import "./style.scss";
+import { Schermata } from "./components.js";
 
-export default function App(){
+const { GETData, postData } = require("./fetch.js");
 
-    return (
-        <h1>Okay</h1>
-    )
+const AppContext = React.createContext(null);
+
+export function App() {
+  const [state, dispatch] = useReducer(reducer, {});
+  return (
+    <AppContext.Provider value={{ state, dispatch }}>
+      <Schermata contesto={AppContext} />
+    </AppContext.Provider>
+  );
 }
+
+function reducer(state, action) {
+    let newState = { ...state };
+    switch (action.type) {
+      default:
+        break;
+    }
+    console.log("stato", newState);
+    return newState;
+  }
+  

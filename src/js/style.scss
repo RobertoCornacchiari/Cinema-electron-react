@@ -1,0 +1,24 @@
+.app {
+    font-family: sans-serif;
+    align-content: center;
+  }
+body {
+  background-image: linear-gradient(
+    to right,
+    #13b077,
+    #d4a819,
+    #d4a819,
+    #13b077
+  );
+  padding-top: 20px;
+}
+.corpo {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    }
+.card {
+    background-color: white;
+  width: 700px;
+  margin: 10px auto;
+}

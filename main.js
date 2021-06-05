@@ -4,6 +4,7 @@ const path = require('path');
 const isDev = !app.isPackaged;
 
 function createWindow() {
+
     const win = new BrowserWindow({
         width: 1200,
         height: 800,
@@ -14,7 +15,7 @@ function createWindow() {
             contextIsolation: true
         }
     })
-
+    //win.maximize();
     win.loadFile('index.html');
 }
 
