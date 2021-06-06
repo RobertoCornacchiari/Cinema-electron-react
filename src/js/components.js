@@ -120,40 +120,32 @@ export function Card(params) {
                     <button
                       type="button"
                       className="btn btn-primary"
-                      id="submitPrenota"
+                      id="Conferma"
                       style={{ fontSize: "20px" }}
                       onClick={() => {
-                        let codiceFiscale =
-                          document.getElementById("CodiceFiscale").value;
-                        console.log(codiceFiscale);
-                        let e = document.getElementById("Presidi");
-                        let valorePresidio = e.options[e.selectedIndex].value;
-                        let nomePresidio = e.options[e.selectedIndex].text;
-                        e = document.getElementById("Giorni");
-                        let valoreGiorno = e.options[e.selectedIndex].value;
-                        postData("prenota.php", {
-                          codice: codiceFiscale,
-                          presidio: valorePresidio,
-                          giorno: valoreGiorno,
-                        }).then((r) => {
-                          document.getElementById("CodiceFiscale").value = "";
-                          if (r == "Errore") {
-                            console.log("Errore");
-                            history.push("/prenota");
-                            alert(
-                              "Errore nell'inserimento. Controllare di aver inserito correttamente tutti i parametri."
-                            );
-                          } else {
-                            codiceUnivoco = r;
-                            data = valoreGiorno;
-                            presidio = nomePresidio;
-                            dispatch({ type: "aggiornaCodice", payload: r });
-                            history.push("/EsitoPrenotazione");
-                          }
-                        });
+                        let recapito = document.getElementById("Recapito").value;
+                        let quanti = document.getElementById("Numero").value;
+                        let e = document.getElementById("Proiezioni");
+                        let valoreProiezione = e.options[e.selectedIndex].value;
+                        if (recapito == "" || isNaN(quanti) || quanti == ""){
+                          alert("Campi non correttamente inseriti");
+                        } else {
+                          postData("confermaSpettatore.php", {
+                            recapito: recapito,
+                            quanti: quanti,
+                            proiezione: valoreProiezione,
+                          });
+                        }
                       }}
                     >
                       Aggiungi
+                    </button> <button
+                    type="button"
+                    className="btn btn-danger"
+                    id="Annulla"
+                    style={{ fontSize: "20px" }}
+                    >
+                      Annulla
                     </button>
                   </>
                 ) : (
@@ -167,33 +159,23 @@ export function Card(params) {
                       let quanti = document.getElementById("Numero").value;
                       let e = document.getElementById("Proiezioni");
                       let valoreProiezione = e.options[e.selectedIndex].value;
-                      postData("nuovoSpettatore.php", {
-                        recapito: recapito,
-                        quanti: quanti,
-                        proiezione: valoreProiezione,
-                      }).then((r) => {
-                        console.log(r);
-                        {/*
-                        
-                        
-                        document.getElementById("CodiceFiscale").value = "";
-                        if (r == "Errore") {
-                          console.log("Errore");
-                          history.push("/prenota");
-                          alert(
-                            "Errore nell'inserimento. Controllare di aver inserito correttamente tutti i parametri."
-                          );
-                        } else {
-                          codiceUnivoco = r;
-                          data = valoreGiorno;
-                          presidio = nomePresidio;
-                          dispatch({ type: "aggiornaCodice", payload: r });
-                          history.push("/EsitoPrenotazione");
-                        }
-                        */}
-                      });
+                      if (recapito == "" || isNaN(quanti) || quanti == ""){
+                        alert("Campi non correttamente inseriti");
+                      } else {
+                        postData("nuovoSpettatore.php", {
+                          recapito: recapito,
+                          quanti: quanti,
+                          proiezione: valoreProiezione,
+                        }).then((r) => {
+                          console.log(r);
+                          if (r == "Posti Esauriti"){
+                            alert("Posti rimanenti non sufficienti; ci dispiace :(");
+                          } else {
+                            dispatch({ type:"Aggiorna codice", payload: r});
+                          }
+                        });
+                      }
                     }}
-                  
                   >
                     Richiedi codice
                   </button>

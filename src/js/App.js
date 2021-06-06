@@ -25,6 +25,9 @@ function reducer(state, action) {
       case "Carica proiezioni":
         newState.proiezioniDisponibili = action.payload;
       break;
+      case "Aggiorna codice":
+        newState.codice = action.payload;  
+      break;
       default:
         break;
     }
