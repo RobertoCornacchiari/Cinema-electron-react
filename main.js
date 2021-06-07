@@ -10,12 +10,13 @@ function createWindow() {
         height: 800,
         backgroundColor: "white",
         webPreferences: {
-            nodeIntegration: false,
+            nodeIntegration: true,
             worldSafeExecuteJavaScript: true,
-            contextIsolation: true
+            contextIsolation: false
         }
     })
     //win.maximize();
+    win.removeMenu();
     win.loadFile('index.html');
 }
 

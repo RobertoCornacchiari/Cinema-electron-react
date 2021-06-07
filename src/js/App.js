@@ -1,6 +1,9 @@
 import React, { useReducer, useContext, useEffect, useState } from "react";
 import "./style.scss";
 import { Schermata } from "./components.js";
+import { useAlert } from 'react-alert';
+import { transitions, positions, Provider as AlertProvider } from 'react-alert';
+import AlertTemplate from 'react-alert-template-basic';
 
 const { GETData, postData } = require("./fetch.js");
 
@@ -14,7 +17,9 @@ export function App() {
 
   return (
     <AppContext.Provider value={{ state, dispatch }}>
+      <AlertProvider template={AlertTemplate}>
       <Schermata contesto={AppContext} />
+      </AlertProvider>
     </AppContext.Provider>
   );
 }

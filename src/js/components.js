@@ -1,5 +1,6 @@
 import React, { useReducer, useContext, useEffect, useState } from "react";
 import "./style.scss";
+import { useAlert } from "react-alert";
 
 const { GETData, postData } = require("./fetch.js");
 
@@ -7,7 +8,7 @@ let bool = 0;
 
 export function Schermata(params) {
   const { state, dispatch } = useContext(params.contesto);
-  
+
   function carica() {
     if (bool == 0) {
       bool = 1;
@@ -59,6 +60,7 @@ function Pagina(props) {
 
 export function Card(params) {
   const { state, dispatch } = useContext(params.contesto);
+  const alert = useAlert();
   return (
     <Pagina
       body={
@@ -123,33 +125,42 @@ export function Card(params) {
                       id="Conferma"
                       style={{ fontSize: "20px" }}
                       onClick={() => {
-                        let recapito = document.getElementById("Recapito").value;
+                        let recapito =
+                          document.getElementById("Recapito").value;
                         let quanti = document.getElementById("Numero").value;
                         let e = document.getElementById("Proiezioni");
                         let valoreProiezione = e.options[e.selectedIndex].value;
-                        if (recapito == "" || isNaN(quanti) || quanti == ""){
-                          alert("Campi non correttamente inseriti");
+                        if (recapito == "" || isNaN(quanti) || quanti == "") {
+                          alert.show("Campi non correttamente riempiti.");
                         } else {
                           postData("confermaSpettatore.php", {
                             recapito: recapito,
                             quanti: quanti,
                             proiezione: valoreProiezione,
+                          }).then((r) => {
+                            pulisci();
+                            dispatch({ type: "Aggiorna codice", payload: "" });
                           });
                         }
                       }}
                     >
                       Aggiungi
-                    </button> <button
-                    type="button"
-                    className="btn btn-danger"
-                    id="Annulla"
-                    style={{ fontSize: "20px" }}
+                    </button>{" "}
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      id="Annulla"
+                      style={{ fontSize: "20px" }}
+                      onClick={() => {
+                        pulisci();
+                        dispatch({ type: "Aggiorna codice", payload: "" });
+                      }}
                     >
                       Annulla
                     </button>
                   </>
                 ) : (
-                    <button
+                  <button
                     type="button"
                     className="btn btn-primary"
                     id="richiediCodice"
@@ -159,8 +170,8 @@ export function Card(params) {
                       let quanti = document.getElementById("Numero").value;
                       let e = document.getElementById("Proiezioni");
                       let valoreProiezione = e.options[e.selectedIndex].value;
-                      if (recapito == "" || isNaN(quanti) || quanti == ""){
-                        alert("Campi non correttamente inseriti");
+                      if (recapito == "" || isNaN(quanti) || quanti == "") {
+                        alert.show("Campi non correttamente riempiti.");
                       } else {
                         postData("nuovoSpettatore.php", {
                           recapito: recapito,
@@ -168,10 +179,22 @@ export function Card(params) {
                           proiezione: valoreProiezione,
                         }).then((r) => {
                           console.log(r);
-                          if (r == "Posti Esauriti"){
-                            alert("Posti rimanenti non sufficienti; ci dispiace :(");
+                          if (r == "Posti esauriti") {
+                            alert.show("Posti esauriti :(");
+                            document.getElementById(
+                              "Recapito"
+                            ).disabled = false;
+                            document.getElementById("Numero").disabled = false;
+                            document.getElementById(
+                              "Proiezioni"
+                            ).disabled = false;
                           } else {
-                            dispatch({ type:"Aggiorna codice", payload: r});
+                            dispatch({ type: "Aggiorna codice", payload: r });
+                            document.getElementById("Recapito").disabled = true;
+                            document.getElementById("Numero").disabled = true;
+                            document.getElementById(
+                              "Proiezioni"
+                            ).disabled = true;
                           }
                         });
                       }
@@ -189,14 +212,24 @@ export function Card(params) {
   );
 }
 
+function pulisci() {
+  document.getElementById("Recapito").disabled = false;
+  document.getElementById("Numero").disabled = false;
+  document.getElementById("Proiezioni").disabled = false;
+  document.getElementById("Numero").value = "";
+  document.getElementById("Recapito").value = "";
+  
+}
+
 function Proiezioni(params) {
   const { state, dispatch } = useContext(params.contesto);
   let proiezioni = [];
-  
+
   let disponibili = state.proiezioniDisponibili;
   console.log(disponibili);
   disponibili.forEach((element, i) => {
-    let stringa = element.titolo + " " + element.dataOra + " Sala: " + element.idSala;
+    let stringa =
+      element.titolo + " " + element.dataOra + " Sala: " + element.idSala;
     proiezioni[proiezioni.length] = (
       <option value={element.id} key={i}>
         {stringa}
