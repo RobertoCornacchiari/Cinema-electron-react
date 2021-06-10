@@ -131,7 +131,8 @@ export function Card(params) {
                         let e = document.getElementById("Proiezioni");
                         let valoreProiezione = e.options[e.selectedIndex].value;
                         if (recapito == "" || isNaN(quanti) || quanti == "") {
-                          alert.show("Campi non correttamente riempiti.");
+                          electron.notificationApi.sendNotification("Campi non correttamente riempiti.");
+                          
                         } else {
                           postData("confermaSpettatore.php", {
                             recapito: recapito,
@@ -166,12 +167,13 @@ export function Card(params) {
                     id="richiediCodice"
                     style={{ fontSize: "20px" }}
                     onClick={() => {
+                      
                       let recapito = document.getElementById("Recapito").value;
                       let quanti = document.getElementById("Numero").value;
                       let e = document.getElementById("Proiezioni");
                       let valoreProiezione = e.options[e.selectedIndex].value;
                       if (recapito == "" || isNaN(quanti) || quanti == "") {
-                        alert.show("Campi non correttamente riempiti.");
+                        electron.notificationApi.sendNotification("Campi non correttamente riempiti.");
                       } else {
                         postData("nuovoSpettatore.php", {
                           recapito: recapito,
@@ -180,7 +182,7 @@ export function Card(params) {
                         }).then((r) => {
                           console.log(r);
                           if (r == "Posti esauriti") {
-                            alert.show("Posti esauriti :(");
+                            electron.notificationApi.sendNotification("Posti esauriti :(");
                             document.getElementById(
                               "Recapito"
                             ).disabled = false;
