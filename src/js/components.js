@@ -82,7 +82,7 @@ export function Card(params) {
                     <Proiezioni contesto={params.contesto} />
                   </select>
                   <div id="ProiezioniHelp" className="form-text">
-                    Seleziona la proiezioni programmata nella sala.
+                    Seleziona la proiezione programmata nella sala.
                   </div>
                 </div>
 
